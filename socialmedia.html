@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="socialmedia.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark mb-5">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#navbarCollapse" aria-controls="navbarCollapse"
+              aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="register.html">Register</a>
+                </li>
+              </ul>
+      
+            </div>
+          </nav>
+            <main role="main" class="container">
+                    <h1 class="mt-5"></h1>
+                    <p class="lead">Wombats Only</p>
+        <form>
+            <div class="form-group">
+              <input type ="text" class="form-control" name="text" id="post" placeholder="Post" />
+            </div>
+  
+            <div class="form-group">
+              <input type="text" class="form-control" name="user" id="user" placeholder="Enter User Name" />
+            </div>
+            <div class="form-group">
+                <input type="url" class="form-control" name="image" id="image" placeholder="Enter Image URL"/>
+            </div>
+            <div class="form-group">
+                  <button class="btn btn-success" onclick="submitPost(event)">
+                      Submit
+                  </button>
+            </div>
+        </form>
+        <div id="feed">
+  
+        </div>
+        </main>
+    </body>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="./socialmedia.js"></script>
+
+
+<script type="text/javascript">
+        function submitPost() {
+            event.preventDefault()
+            if(!window.localStorage.getItem('user_id')) {
+              alert("You must login or register ");
+            } else {
+              let subject = $("#subject").val();
+              // let subject = document.getElementById('subject').val
+              let content = $("#content").val();
+              // let content = document.getElementById('content').val
+              let image = $("#image").val();
+              // let image = document.getElementById('image').val
+              let data = {  
+                  user_id : window.localStorage.getItem('user_id'),
+                  title : subject,
+                  body : content,
+                  image_url : image
+              };
+              var succcesInsert = function(response) {
+                  let item = createPostItem(response);
+                  insertIntoFeed(item);
+                  //Empty the input fields for the user
+                  $("#subject").val('');
+                  $("#content").val('');
+                  $("#image").val('')
+              };
+              var errorInsert = function(xhr, error){
+                  console.log(error);
+              }
+              apiInsertPost(data, succcesInsert, errorInsert);
+            }
+        }
+        //Populate the feed with initial data
+        var successFunction = function(response){
+          
+          for(let i = 0; i< response.length; i++) {
+              let item = createPostItem(response[i]);
+              insertIntoFeed(item);
+          }
+        };
+        var errorFunction = function(xhr, error){
+          $('#errorMessage').html(response.responseText);
+        }
+        
+//apiGetPosts(successFunction, errorFunction );
+  </script>
+  
+</html>

@@ -1,0 +1,29 @@
+h1 {
+    font-size: 30 px;
+    text-align: center;
+}
+
+.btn btn-outline-secondary {
+    padding: 0 px;
+    margin: auto;
+}
+.btn btn-primary { 
+    padding: 40px;
+    margin-top: 150px;
+}
+
+
+
+body {
+    background-color: lightgray;
+    align-content: center;
+}
+#output {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 16px;
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+} 
